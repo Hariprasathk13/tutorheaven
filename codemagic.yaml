@@ -1,7 +1,20 @@
-scripts:
-  - name: Generate .env from Codemagic variables
-    script: |
-      rm -f .env
-      printenv | grep '^ENV_' | sed 's/^ENV_//' >> .env
-      echo ".env generated with the following keys:"
-      cut -d= -f1 .env
+workflows:
+  default-workflow:
+    name: Default Workflow
+    environment:
+      flutter: 3.19.5
+
+    scripts:
+      - name: Generate .env file
+        script: |
+          echo "Generating .env..."
+          rm -f .env
+          printenv | grep '^ENV_' | sed 's/^ENV_//' >> .env
+          echo "Generated keys:"
+          cut -d= -f1 .env
+
+      - name: Get dependencies
+        script: flutter pub get
+
+      - name: Build debug APK
+        script: flutter build apk --debug
