@@ -7,14 +7,14 @@ workflows:
     scripts:
       - name: Generate .env file
         script: |
-          echo "Generating .env..."
           rm -f .env
           printenv | grep '^ENV_' | sed 's/^ENV_//' >> .env
-          echo "Generated keys:"
-          cut -d= -f1 .env
 
       - name: Get dependencies
         script: flutter pub get
 
       - name: Build debug APK
         script: flutter build apk --debug
+
+    artifacts:
+      - build/app/outputs/flutter-apk/app-debug.apk
