@@ -1,0 +1,7 @@
+scripts:
+  - name: Generate .env from Codemagic variables
+    script: |
+      rm -f .env
+      printenv | grep '^ENV_' | sed 's/^ENV_//' >> .env
+      echo ".env generated with the following keys:"
+      cut -d= -f1 .env
